@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { Check, ArrowRight, Phone, Zap, Clock } from 'lucide-react';
 
+const DEMO_NUMBER = '+18665150533';
+const DISPLAY_NUMBER = '(866) 515-0533';
+
 const tiers = [
   {
     name: 'Core',
@@ -19,7 +22,7 @@ const tiers = [
       'Basic analytics dashboard',
       'No setup fee • No contract • Cancel anytime',
     ],
-    cta: 'Start 14-Day Free Trial',
+    cta: 'Call Demo',
     popular: false,
   },
   {
@@ -37,7 +40,7 @@ const tiers = [
       'Team access up to 8 users',
       'No setup fee • No contract • Cancel anytime',
     ],
-    cta: 'Start 14-Day Free Trial',
+    cta: 'Call Demo',
     popular: true,
   },
   {
@@ -55,7 +58,7 @@ const tiers = [
       'Low-cost usage overages if needed',
       'No setup fee • No contract • Cancel anytime',
     ],
-    cta: 'Start 14-Day Free Trial',
+    cta: 'Call Demo',
     popular: false,
   },
 ];
@@ -74,13 +77,25 @@ export default function ServiceLock() {
             </div>
             <span className="text-2xl font-semibold tracking-tight">ServiceLock</span>
           </div>
+
           <div className="flex items-center gap-8 text-sm">
-            <a href="#how" className="hover:text-yellow-400 transition-colors">How it works</a>
-            <a href="#pricing" className="hover:text-yellow-400 transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-yellow-400 transition-colors">FAQ</a>
-            <button className="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-6 py-2.5 rounded-2xl font-medium flex items-center gap-2 transition-all">
+            <a href="#how" className="hover:text-yellow-400 transition-colors">
+              How it works
+            </a>
+            <a href="#pricing" className="hover:text-yellow-400 transition-colors">
+              Pricing
+            </a>
+            <a href="#faq" className="hover:text-yellow-400 transition-colors">
+              FAQ
+            </a>
+
+            <a
+              href={`tel:${DEMO_NUMBER}`}
+              className="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-6 py-2.5 rounded-2xl font-medium flex items-center gap-2 transition-all"
+              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
+            >
               Call Demo <Phone className="w-4 h-4" />
-            </button>
+            </a>
           </div>
         </div>
       </nav>
@@ -94,39 +109,54 @@ export default function ServiceLock() {
           </div>
 
           <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">
-            ServiceLock —<br />
-            Stop Losing Jobs<br />
+            ServiceLock
+            <br />
+            Stop Losing Jobs
+            <br />
             From <span className="text-yellow-400">Missed Calls</span>
           </h1>
 
           <p className="text-2xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-            Built for service businesses where missed calls mean lost revenue.<br />
+            Built for service businesses where missed calls mean lost revenue.
+            <br />
             Instant SMS follow-up → smart qualification → warm lead handoff.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a 
-              href="#pricing" 
+            <a
+              href="#pricing"
               className="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-10 py-4 rounded-2xl text-lg font-semibold flex items-center justify-center gap-3 transition-all"
             >
               Start 14-Day Free Trial
               <ArrowRight className="w-5 h-5" />
             </a>
-            <button className="border border-zinc-700 hover:border-zinc-500 px-8 py-4 rounded-2xl text-lg font-medium transition-all flex items-center gap-2">
+
+            <a
+              href={`tel:${DEMO_NUMBER}`}
+              className="border border-zinc-700 hover:border-zinc-500 px-8 py-4 rounded-2xl text-lg font-medium transition-all flex items-center gap-2"
+              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
+            >
               <Phone className="w-5 h-5" /> Call Demo
-            </button>
+            </a>
           </div>
 
-          <p className="text-sm text-zinc-500 mt-8">No credit card required • No setup fee • Cancel anytime</p>
+          <p className="text-sm text-zinc-500 mt-8">
+            No credit card required • No setup fee • Cancel anytime
+          </p>
+          <p className="text-sm text-zinc-400 mt-3">
+            Demo line: <a href={`tel:${DEMO_NUMBER}`} className="hover:text-yellow-400 transition-colors">{DISPLAY_NUMBER}</a>
+          </p>
         </div>
       </section>
 
       {/* Value Section */}
       <section className="py-20 px-6 bg-zinc-900">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-5xl font-bold tracking-tight mb-6">Turn Missed Calls Into Recovered Jobs</h2>
+          <h2 className="text-5xl font-bold tracking-tight mb-6">
+            Turn Missed Calls Into Recovered Jobs
+          </h2>
           <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
-            When customers can’t reach you, they call the next company. ServiceLock responds faster, captures key details, and delivers warm leads so your team calls back with context — not cold.
+            When customers can’t reach you, they call the next company. ServiceLock responds faster, captures key details, and delivers warm leads so your team calls back with context, not cold.
           </p>
         </div>
       </section>
@@ -141,13 +171,18 @@ export default function ServiceLock() {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { num: "01", title: "Missed call detected", desc: "A customer calls while your team is on a job, after hours, or during dispatch." },
-              { num: "02", title: "Instant response goes out", desc: "A fast, professional SMS is sent while the customer is still deciding who to hire." },
-              { num: "03", title: "Lead details get captured", desc: "We collect name, job type, urgency, and callback preference." },
-              { num: "04", title: "Your team gets the handoff", desc: "You receive a warm lead with full context — so your callback feels informed and fast." },
+              { num: '01', title: 'Missed call detected', desc: 'A customer calls while your team is on a job, after hours, or during dispatch.' },
+              { num: '02', title: 'Instant response goes out', desc: 'A fast, professional SMS is sent while the customer is still deciding who to hire.' },
+              { num: '03', title: 'Lead details get captured', desc: 'We collect name, job type, urgency, and callback preference.' },
+              { num: '04', title: 'Your team gets the handoff', desc: 'You receive a warm lead with full context, so your callback feels informed and fast.' },
             ].map((step, i) => (
-              <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/50 transition-all group">
-                <div className="text-7xl font-bold text-yellow-500/20 group-hover:text-yellow-500/40 transition mb-6">{step.num}</div>
+              <div
+                key={i}
+                className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/50 transition-all group"
+              >
+                <div className="text-7xl font-bold text-yellow-500/20 group-hover:text-yellow-500/40 transition mb-6">
+                  {step.num}
+                </div>
                 <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
                 <p className="text-zinc-400">{step.desc}</p>
               </div>
@@ -161,7 +196,9 @@ export default function ServiceLock() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-5xl font-bold tracking-tight mb-8">You’re Losing Real Money Every Time You Miss a Call</h2>
+              <h2 className="text-5xl font-bold tracking-tight mb-8">
+                You’re Losing Real Money Every Time You Miss a Call
+              </h2>
               <div className="space-y-8 text-lg">
                 <div className="flex gap-4">
                   <div className="text-yellow-400 font-mono text-2xl">$500</div>
@@ -196,13 +233,20 @@ export default function ServiceLock() {
       {/* Industries & Use Cases */}
       <section className="py-24 px-6 bg-zinc-900">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold tracking-tight text-center mb-16">Built for Mid-Tier Service Businesses</h2>
-          
+          <h2 className="text-5xl font-bold tracking-tight text-center mb-16">
+            Built for Mid-Tier Service Businesses
+          </h2>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {['HVAC', 'Plumbing', 'Electrical', 'Roofing'].map((industry) => (
-              <div key={industry} className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition">
+              <div
+                key={industry}
+                className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition"
+              >
                 <h3 className="text-2xl font-semibold mb-4">{industry}</h3>
-                <p className="text-zinc-400 text-sm">After-hours emergencies, dispatch spikes, paid ad traffic, weekend calls — ServiceLock keeps leads warm.</p>
+                <p className="text-zinc-400 text-sm">
+                  After-hours emergencies, dispatch spikes, paid ad traffic, weekend calls, ServiceLock keeps leads warm.
+                </p>
               </div>
             ))}
           </div>
@@ -230,7 +274,7 @@ export default function ServiceLock() {
                 onClick={() => setIsAnnual(true)}
                 className={`px-8 py-3 rounded-xl transition-all ${isAnnual ? 'bg-zinc-800 shadow-md' : 'text-zinc-400'}`}
               >
-                Annual <span className="text-yellow-400 text-xs">— Save ~16%</span>
+                Annual <span className="text-yellow-400 text-xs">Save ~16%</span>
               </button>
             </div>
           </div>
@@ -242,8 +286,8 @@ export default function ServiceLock() {
                 <div
                   key={tier.name}
                   className={`relative rounded-3xl p-10 border flex flex-col transition-all ${
-                    tier.popular 
-                      ? 'border-yellow-500 bg-zinc-900 scale-[1.02] shadow-2xl shadow-yellow-500/10' 
+                    tier.popular
+                      ? 'border-yellow-500 bg-zinc-900 scale-[1.02] shadow-2xl shadow-yellow-500/10'
                       : 'border-zinc-800 hover:border-zinc-700'
                   }`}
                 >
@@ -274,17 +318,20 @@ export default function ServiceLock() {
                   </ul>
 
                   <a
-                    href="#"
+                    href={`tel:${DEMO_NUMBER}`}
                     className={`block text-center py-4 rounded-2xl font-semibold text-lg transition-all ${
-                      tier.popular 
-                        ? 'bg-yellow-500 hover:bg-yellow-400 text-zinc-950' 
+                      tier.popular
+                        ? 'bg-yellow-500 hover:bg-yellow-400 text-zinc-950'
                         : 'bg-zinc-800 hover:bg-zinc-700 border border-zinc-700'
                     }`}
+                    aria-label={`Call demo at ${DISPLAY_NUMBER}`}
                   >
                     {tier.cta}
                   </a>
 
-                  <p className="text-center text-xs text-zinc-500 mt-6">14-day risk-free trial • One recovered job often covers the cost</p>
+                  <p className="text-center text-xs text-zinc-500 mt-6">
+                    14-day risk-free trial • One recovered job often covers the cost
+                  </p>
                 </div>
               );
             })}
@@ -295,16 +342,18 @@ export default function ServiceLock() {
       {/* FAQ */}
       <section id="faq" className="py-24 px-6 bg-zinc-900">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-5xl font-bold tracking-tight text-center mb-16">Frequently Asked Questions</h2>
-          
+          <h2 className="text-5xl font-bold tracking-tight text-center mb-16">
+            Frequently Asked Questions
+          </h2>
+
           <div className="space-y-10 text-lg">
             {[
-              ["Does ServiceLock replace my receptionist or CSR?", "No. It only activates on missed calls to speed up follow-up. Your team still handles live calls."],
-              ["Can I keep my current business number?", "Yes. It works with your existing phone number."],
-              ["How fast does the customer get a response?", "Usually within 5–15 seconds of the missed call."],
-              ["What information gets captured?", "Name, job type, urgency, callback preference, and any details the customer shares."],
-              ["Who is this best for?", "Mid-tier HVAC, plumbing, electrical, and roofing businesses where missed calls equal real lost revenue."],
-              ["Is there a contract?", "No contract. Cancel anytime."],
+              ['Does ServiceLock replace my receptionist or CSR?', 'No. It only activates on missed calls to speed up follow-up. Your team still handles live calls.'],
+              ['Can I keep my current business number?', 'Yes. It works with your existing phone number.'],
+              ['How fast does the customer get a response?', 'Usually within 5–15 seconds of the missed call.'],
+              ['What information gets captured?', 'Name, job type, urgency, callback preference, and any details the customer shares.'],
+              ['Who is this best for?', 'Mid-tier HVAC, plumbing, electrical, and roofing businesses where missed calls equal real lost revenue.'],
+              ['Is there a contract?', 'No contract. Cancel anytime.'],
             ].map(([q, a], i) => (
               <div key={i} className="border-b border-zinc-800 pb-8 last:border-0">
                 <h3 className="font-semibold mb-3">{q}</h3>
@@ -319,10 +368,28 @@ export default function ServiceLock() {
       <section className="py-28 px-6 border-t border-zinc-800 bg-black">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-5xl font-bold tracking-tight mb-6">Stop letting good calls disappear</h2>
-          <p className="text-2xl text-zinc-400 mb-10">You already earned the lead. Protect it with faster, smarter follow-up.</p>
-          <a href="#pricing" className="inline-block bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-12 py-5 rounded-2xl text-xl font-semibold transition-all">
-            Start Your 14-Day Free Trial
-          </a>
+          <p className="text-2xl text-zinc-400 mb-10">
+            You already earned the lead. Protect it with faster, smarter follow-up.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a
+              href="#pricing"
+              className="inline-block bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-12 py-5 rounded-2xl text-xl font-semibold transition-all"
+            >
+              Start Your 14-Day Free Trial
+            </a>
+
+            <a
+              href={`tel:${DEMO_NUMBER}`}
+              className="inline-flex items-center gap-2 border border-zinc-700 hover:border-zinc-500 px-10 py-5 rounded-2xl text-xl font-semibold transition-all"
+              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
+            >
+              <Phone className="w-5 h-5" />
+              Call Demo Now
+            </a>
+          </div>
+
           <p className="mt-8 text-sm text-zinc-500">No setup fee • No contract • Cancel anytime</p>
         </div>
       </section>
@@ -330,8 +397,13 @@ export default function ServiceLock() {
       {/* Footer */}
       <footer className="bg-zinc-950 py-12 px-6 border-t border-zinc-900">
         <div className="max-w-6xl mx-auto text-center text-sm text-zinc-500">
-          © {new Date().getFullYear()} ServiceLock. All rights reserved.<br />
+          © {new Date().getFullYear()} ServiceLock. All rights reserved.
+          <br />
           Built for service businesses that refuse to lose revenue to missed calls.
+          <br />
+          <a href={`tel:${DEMO_NUMBER}`} className="hover:text-yellow-400 transition-colors">
+            {DISPLAY_NUMBER}
+          </a>
         </div>
       </footer>
     </>
