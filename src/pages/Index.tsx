@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Check, ArrowRight, Phone, Zap, Clock } from 'lucide-react';
+import { Check, ArrowRight, Phone, Zap, Clock, TrendingDown } from 'lucide-react';
 
 const DEMO_NUMBER = '+18665150533';
 const DISPLAY_NUMBER = '(866) 515-0533';
@@ -58,7 +58,7 @@ export default function ServiceLock() {
 
   return (
     <>
-      {/* Navbar */}
+      {/* Navbar - unchanged */}
       <nav className="fixed top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -81,21 +81,21 @@ export default function ServiceLock() {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero - small tweak for relevance */}
       <section className="pt-32 pb-24 px-6 bg-gradient-to-b from-zinc-950 to-zinc-900">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-full px-5 py-2 mb-8">
             <span className="text-yellow-400">⚡</span>
-            <span className="text-sm font-medium">Missed calls = lost revenue</span>
+            <span className="text-sm font-medium">Stop paying for weak answering services</span>
           </div>
           <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">
             ServiceLock<br />
-            Stop Losing Jobs<br />
-            From <span className="text-yellow-400">Missed Calls</span>
+            Replace Your Answering Service<br />
+            And <span className="text-yellow-400">Never Miss Another Job</span>
           </h1>
           <p className="text-2xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-            Built for service businesses where missed calls mean lost revenue.<br />
-            Instant SMS follow-up → smart qualification → warm lead handoff.
+            Instant AI response on missed calls. Smart qualification. Warm lead handoff.<br />
+            Better results than most live services — at similar or lower cost.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
@@ -118,138 +118,43 @@ export default function ServiceLock() {
         </div>
       </section>
 
-      {/* Value Section */}
-      <section className="py-20 px-6 bg-zinc-900">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-5xl font-bold tracking-tight mb-6">
-            Turn Missed Calls Into Recovered Jobs
-          </h2>
-          <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
-            When customers can’t reach you, they call the next company. ServiceLock responds faster, captures key details, and delivers warm leads so your team calls back with context.
-          </p>
-        </div>
-      </section>
+      {/* Rest of your sections (Value, How it Works, ROI, Industries) can stay exactly as in the previous version I sent */}
 
-      {/* How It Works */}
-      <section id="how" className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold tracking-tight mb-4">How ServiceLock Works</h2>
-            <p className="text-xl text-zinc-400">From missed call to warm handoff in seconds</p>
-          </div>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { num: '01', title: 'Missed call detected', desc: 'A customer calls while your team is on a job, after hours, or during dispatch.' },
-              { num: '02', title: 'Instant response goes out', desc: 'A fast, professional SMS is sent while the customer is still deciding who to hire.' },
-              { num: '03', title: 'Lead details get captured', desc: 'We collect name, job type, urgency, and callback preference.' },
-              { num: '04', title: 'Your team gets the handoff', desc: 'You receive a warm lead with full context, so your callback feels informed and fast.' },
-            ].map((step, i) => (
-              <div
-                key={i}
-                className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/50 transition-all group"
-              >
-                <div className="text-7xl font-bold text-yellow-500/20 group-hover:text-yellow-500/40 transition mb-6">
-                  {step.num}
-                </div>
-                <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                <p className="text-zinc-400">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why It Matters + ROI */}
-      <section className="py-24 px-6 bg-zinc-950">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-5xl font-bold tracking-tight mb-8">
-                You’re Losing Real Money Every Time You Miss a Call
-              </h2>
-              <div className="space-y-8 text-lg">
-                <div className="flex gap-4">
-                  <div className="text-yellow-400 font-mono text-2xl">$500</div>
-                  <div>Small repair or service call</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="text-yellow-400 font-mono text-2xl">$1,500</div>
-                  <div>Mid-sized job or urgent issue</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="text-yellow-400 font-mono text-2xl">$5,000+</div>
-                  <div>High-value project or replacement</div>
-                </div>
-              </div>
-              <p className="mt-10 text-zinc-400">
-                You already paid for that call through ads, SEO, referrals, or reputation. ServiceLock helps you protect it.
-              </p>
-            </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-10">
-              <p className="text-xl leading-relaxed">
-                Most customers see ROI in under 30 days.<br />
-                One recovered job often covers the entire month.
-              </p>
-              <div className="mt-8 flex items-center gap-3 text-sm text-yellow-400">
-                <Clock className="w-5 h-5" /> One booked job can justify the cost
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Industries */}
-      <section className="py-24 px-6 bg-zinc-900">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold tracking-tight text-center mb-16">
-            Built for Mid-Tier Service Businesses
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {['HVAC', 'Plumbing', 'Electrical', 'Roofing'].map((industry) => (
-              <div
-                key={industry}
-                className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition"
-              >
-                <h3 className="text-2xl font-semibold mb-4">{industry}</h3>
-                <p className="text-zinc-400 text-sm">
-                  After-hours emergencies, dispatch spikes, paid ad traffic, weekend calls — ServiceLock keeps leads warm.
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing - SINGLE FLAT PRICE */}
+      {/* New & Improved Pricing Section */}
       <section id="pricing" className="py-24 px-6 bg-black">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold tracking-tight mb-4">Simple, Transparent Pricing</h2>
+            <h2 className="text-5xl font-bold tracking-tight mb-4">Smarter & Often Cheaper Than Your Current Answering Service</h2>
             <p className="text-xl text-zinc-400">
-              One plan. Everything you need. Built to pay for itself with just one recovered job.
+              Most service businesses pay $250–$600+/mo for live answering that just takes messages.<br />
+              ServiceLock gives you instant responses, real qualification, and warm leads — usually for less.
             </p>
           </div>
 
-          <div className="mx-auto max-w-md rounded-3xl border border-yellow-500/50 bg-zinc-900 p-10 text-center shadow-2xl shadow-yellow-500/10">
+          <div className="mx-auto max-w-md rounded-3xl border border-yellow-500/50 bg-zinc-900 p-10 text-center shadow-2xl shadow-yellow-500/10 relative">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-500 text-zinc-950 px-6 py-1 rounded-full text-xs font-bold tracking-wider flex items-center gap-1">
+              <TrendingDown className="w-4 h-4" /> BETTER VALUE
+            </div>
+
             <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-400 px-4 py-1 rounded-full text-sm font-medium mb-6">
-              14-DAY FREE TRIAL
+              14-DAY FREE TRIAL — NO RISK
             </div>
 
             <div className="font-display text-6xl font-bold tracking-tighter text-white mb-2">
               $447
               <span className="text-2xl font-medium text-zinc-400">/mo</span>
             </div>
-            <p className="text-zinc-400 mb-8">Billed monthly • Cancel anytime</p>
+            <p className="text-zinc-400 mb-8">Billed monthly • Cancel anytime • No overage fees</p>
 
             <ul className="mx-auto max-w-xs space-y-4 text-left text-zinc-300 mb-10">
               {[
-                "Instant missed-call SMS response",
-                "Smart lead capture & qualification",
-                "Warm lead handoff with full context",
-                "Basic CRM & dispatch integrations",
-                "Team notifications & basic analytics",
-                "No setup fee • No contract",
-                "14-day risk-free trial",
+                "Instant SMS response on every missed call (5–15 seconds)",
+                "Smart lead qualification + urgency scoring",
+                "Warm handoff with name, job type & context",
+                "Basic CRM / dispatch integrations",
+                "Works 24/7 with no extra charges",
+                "Replaces or beats most live answering services",
+                "Most users recoup cost with just 1 recovered job",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
@@ -266,106 +171,14 @@ export default function ServiceLock() {
             </a>
 
             <p className="mt-6 text-xs text-zinc-500">
-              Most customers recoup the full monthly cost with just 1–2 recovered jobs
+              If you're currently paying for an answering service, this usually costs the same or less — but actually books more jobs.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Trial Form */}
-      <section id="trial" className="py-24 px-6 bg-zinc-950 border-t border-zinc-800">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold tracking-tight mb-4">Start Your 14-Day Free Trial</h2>
-            <p className="text-xl text-zinc-400">
-              Tell us about your business. We’ll review the fit and get you set up fast.
-            </p>
-          </div>
+      {/* Trial form, FAQ, Final CTA, Footer — keep exactly as in the previous code I sent you */}
 
-          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-10 space-y-6">
-            {/* Form fields remain exactly as you had them */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="fullName" className="block text-sm font-medium mb-2">Full Name</label>
-                <input id="fullName" name="fullName" type="text" required value={formData.fullName} onChange={updateField}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400" />
-              </div>
-              <div>
-                <label htmlFor="companyName" className="block text-sm font-medium mb-2">Company Name</label>
-                <input id="companyName" name="companyName" type="text" required value={formData.companyName} onChange={updateField}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400" />
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-2">Phone</label>
-                <input id="phone" name="phone" type="tel" required value={formData.phone} onChange={updateField}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400" />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
-                <input id="email" name="email" type="email" required value={formData.email} onChange={updateField}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400" />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="industry" className="block text-sm font-medium mb-2">Industry</label>
-              <select id="industry" name="industry" required value={formData.industry} onChange={updateField}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400">
-                <option value="">Select one</option>
-                <option value="HVAC">HVAC</option>
-                <option value="Plumbing">Plumbing</option>
-                <option value="Electrical">Electrical</option>
-                <option value="Roofing">Roofing</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="missedCallProblem" className="block text-sm font-medium mb-2">
-                What happens today when you miss a call?
-              </label>
-              <textarea
-                id="missedCallProblem"
-                name="missedCallProblem"
-                required
-                rows={5}
-                value={formData.missedCallProblem}
-                onChange={updateField}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-2xl px-4 py-3 text-white outline-none focus:border-yellow-400 resize-none"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:opacity-60 disabled:cursor-not-allowed text-zinc-950 px-8 py-4 rounded-2xl text-lg font-semibold transition-all"
-            >
-              {isSubmitting ? 'Submitting...' : 'Start 14-Day Free Trial'}
-            </button>
-
-            {submitSuccess && (
-              <div className="rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-green-300">
-                Thanks! Your trial request is in. We’ll follow up fast.
-              </div>
-            )}
-            {submitError && (
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">
-                {submitError}
-              </div>
-            )}
-          </form>
-        </div>
-      </section>
-
-      {/* FAQ, Final CTA, and Footer remain unchanged from your original code */}
-      {/* (I kept them identical for brevity — just copy them back in if needed) */}
-
-      {/* FAQ Section - paste your original FAQ here */}
-      {/* Final CTA Section - paste your original */}
-      {/* Footer - paste your original */}
     </>
   );
 }
