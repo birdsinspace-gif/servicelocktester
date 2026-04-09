@@ -114,7 +114,7 @@ export default function ServiceLock() {
           </div>
 
           <h1 className="mb-6 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
-            ServiceLock
+            
             <br />
             Stop Losing Jobs
             <br />
