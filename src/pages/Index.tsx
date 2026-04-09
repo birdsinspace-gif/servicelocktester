@@ -1,719 +1,487 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import { Check, ArrowRight, Phone, Zap, Clock } from "lucide-react";
+import { useState } from 'react';
+import { ArrowRight, Shield, Users, Scale, FileText, CheckCircle } from 'lucide-react';
 
-const DEMO_NUMBER = "+18665150533";
-const DISPLAY_NUMBER = "(866) 515-0533";
+export default function Home() {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    employmentStatus: 'former',
+    employmentStart: '',
+    employmentEnd: '',
+    position: '',
+    grievance: '',
+    agree: false,
+  });
 
-type FormState = {
-  fullName: string;
-  companyName: string;
-  phone: string;
-  email: string;
-  industry: string;
-  missedCallProblem: string;
-};
-
-const initialFormState: FormState = {
-  fullName: "",
-  companyName: "",
-  phone: "",
-  email: "",
-  industry: "",
-  missedCallProblem: "",
-};
-
-function ParallaxWord({
-  text,
-  y,
-  opacity,
-  className = "",
-}: {
-  text: string;
-  y: MotionValue<string | number>;
-  opacity: MotionValue<number>;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      style={{ y, opacity }}
-      className={`pointer-events-none absolute inset-x-0 text-center font-black uppercase tracking-[0.35em] ${className}`}
-      aria-hidden="true"
-    >
-      {text}
-    </motion.div>
-  );
-}
-
-export default function ServiceLock() {
-  const [formData, setFormData] = useState<FormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const heroRef = useRef<HTMLElement | null>(null);
-  const roiRef = useRef<HTMLElement | null>(null);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : null;
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked !== null ? checked : value,
+    }));
+  };
 
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const { scrollYProgress: roiProgress } = useScroll({
-    target: roiRef,
-    offset: ["start end", "end start"],
-  });
-
-  const heroWordY = useTransform(heroProgress, [0, 1], ["0%", "30%"]);
-  const heroWordOpacity = useTransform(heroProgress, [0, 0.45, 1], [0.18, 0.09, 0]);
-
-  const roiWordY = useTransform(roiProgress, [0, 1], ["10%", "-15%"]);
-  const roiWordOpacity = useTransform(roiProgress, [0, 0.5, 1], [0, 0.08, 0]);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError("");
-    setSubmitSuccess(false);
-
-    try {
-      const res = await fetch("/api/trial", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Something went wrong.");
-      }
-
-      setSubmitSuccess(true);
-      setFormData(initialFormState);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Something went wrong.";
-      setSubmitError(message);
-    } finally {
-      setIsSubmitting(false);
+    if (!formData.agree) {
+      alert('Please agree to the terms to file your grievance.');
+      return;
     }
-  }
 
-  function updateField(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }
+    setIsSubmitting(true);
+
+    // Simulate API call (in production, replace with your Formspree, EmailJS, or backend endpoint)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    console.log('Grievance submitted:', formData);
+    setSubmitted(true);
+    setIsSubmitting(false);
+
+    // Reset form after success
+    setTimeout(() => {
+      setFormData({
+        fullName: '',
+        email: '',
+        phone: '',
+        employmentStatus: 'former',
+        employmentStart: '',
+        employmentEnd: '',
+        position: '',
+        grievance: '',
+        agree: false,
+      });
+      setSubmitted(false);
+    }, 4000);
+  };
 
   return (
-    <>
-      {/* Navbar */}
-      <nav className="fixed top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-yellow-500">
-              <Zap className="h-5 w-5 text-zinc-950" />
+    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white font-sans">
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-x-3">
+            <div className="w-9 h-9 bg-red-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl rotate-12">⚖️</div>
+            <div>
+              <span className="text-2xl font-semibold tracking-tighter">LexisNexis</span>
+              <span className="text-2xl font-semibold tracking-tighter text-red-500">Justice</span>
             </div>
-            <span className="text-2xl font-semibold tracking-tight">
-              ServiceLock
-            </span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-x-8 text-sm font-medium">
+            <a href="#problem" className="hover:text-red-400 transition-colors">The Problem</a>
+            <a href="#why" className="hover:text-red-400 transition-colors">Why Class Action?</a>
+            <a href="#stories" className="hover:text-red-400 transition-colors">Real Stories</a>
+            <a href="#file" className="hover:text-red-400 transition-colors">File Grievance</a>
           </div>
 
-          <div className="flex items-center gap-8 text-sm">
-            <a href="#how" className="transition-colors hover:text-yellow-400">
-              How it works
-            </a>
-            <a href="#pricing" className="transition-colors hover:text-yellow-400">
-              Pricing
-            </a>
-            <a href="#faq" className="transition-colors hover:text-yellow-400">
-              FAQ
-            </a>
-
-            <a
-              href={`tel:${DEMO_NUMBER}`}
-              className="flex items-center gap-2 rounded-2xl bg-yellow-500 px-6 py-2.5 font-medium text-zinc-950 transition-all hover:bg-yellow-400"
-              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
-            >
-              Call Demo <Phone className="h-4 w-4" />
-            </a>
-          </div>
+          <button
+            onClick={() => document.getElementById('file')?.scrollIntoView({ behavior: 'smooth' })}
+            className="px-6 py-3 bg-red-600 hover:bg-red-500 transition-all rounded-2xl font-semibold flex items-center gap-x-2 text-sm uppercase tracking-widest"
+          >
+            FILE NOW <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 px-6 pb-24 pt-32"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(234,179,8,0.14),transparent_38%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent" />
-
-        <ParallaxWord
-          text="Recovered Revenue"
-          y={heroWordY}
-          opacity={heroWordOpacity}
-          className="top-24 text-[12vw] text-white/[0.05]"
-        />
-
-        <div className="relative mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/80 px-5 py-2 backdrop-blur-sm"
-          >
-            <span className="text-yellow-400">⚡</span>
-            <span className="text-sm font-medium">Missed calls = lost revenue</span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08, duration: 0.6 }}
-            className="mb-6 text-6xl font-bold leading-[0.95] tracking-tighter md:text-7xl"
-          >
-            ServiceLock
-            <br />
-            Stop Losing Jobs
-            <br />
-            From <span className="text-yellow-400">Missed Calls</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.16, duration: 0.6 }}
-            className="mx-auto mb-6 max-w-2xl text-2xl text-zinc-400"
-          >
-            Built for service businesses where missed calls mean lost revenue.
-            <br />
-            Instant SMS follow-up → smart qualification → warm lead handoff.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.22, duration: 0.6 }}
-            className="mx-auto mb-10 max-w-xl text-base text-zinc-500"
-          >
-            Close just one recovered job and it can pay for itself.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.28, duration: 0.6 }}
-            className="flex flex-col items-center justify-center gap-4 sm:flex-row"
-          >
-            <a
-              href="#trial"
-              className="flex items-center justify-center gap-3 rounded-2xl bg-yellow-500 px-10 py-4 text-lg font-semibold text-zinc-950 transition-all hover:bg-yellow-400"
-            >
-              Start 14-Day Free Trial
-              <ArrowRight className="h-5 w-5" />
-            </a>
-
-            <a
-              href={`tel:${DEMO_NUMBER}`}
-              className="flex items-center gap-2 rounded-2xl border border-zinc-700 px-8 py-4 text-lg font-medium transition-all hover:border-zinc-500"
-              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
-            >
-              <Phone className="h-5 w-5" /> Call Demo
-            </a>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.34, duration: 0.6 }}
-            className="mt-8 text-sm text-zinc-500"
-          >
-            No credit card required • No setup fee • Cancel anytime
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.38, duration: 0.6 }}
-            className="mt-3 text-sm text-zinc-400"
-          >
-            Demo line:{" "}
-            <a
-              href={`tel:${DEMO_NUMBER}`}
-              className="transition-colors hover:text-yellow-400"
-            >
-              {DISPLAY_NUMBER}
-            </a>
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Value Section */}
-      <section className="bg-zinc-900 px-6 py-20">
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="mb-6 text-5xl font-bold tracking-tight">
-            Turn Missed Calls Into Recovered Jobs
-          </h2>
-          <p className="mx-auto max-w-3xl text-xl text-zinc-400">
-            When customers can’t reach you, they call the next company. ServiceLock
-            responds faster, captures key details, and delivers warm leads so your
-            team calls back with context, not cold.
-          </p>
-        </div>
-      </section>
-
-      {/* Why It Matters + ROI */}
-      <section
-        ref={roiRef}
-        className="relative overflow-hidden bg-zinc-950 px-6 py-24"
-      >
-        <ParallaxWord
-          text="Lost Revenue"
-          y={roiWordY}
-          opacity={roiWordOpacity}
-          className="top-10 text-[10vw] text-yellow-400/[0.08]"
-        />
-
-        <div className="relative mx-auto max-w-5xl">
-          <div className="grid items-center gap-16 md:grid-cols-2">
-            <div>
-              <h2 className="mb-8 text-5xl font-bold tracking-tight">
-                You’re Losing Real Money Every Time You Miss a Call
-              </h2>
-
-              <div className="space-y-8 text-lg">
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$500</div>
-                  <div>Small repair or service call</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$1,500</div>
-                  <div>Mid-sized job or urgent issue</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$5,000+</div>
-                  <div>High-value project or replacement</div>
-                </div>
-              </div>
-
-              <p className="mt-10 text-zinc-400">
-                You already paid for that call through ads, SEO, referrals, or
-                reputation. ServiceLock helps you protect it.
-              </p>
+      {/* HERO */}
+      <header className="pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(at_center,#4f46e510_0%,transparent_70%)] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-x-2 bg-white/10 text-white text-sm font-medium px-5 py-2 rounded-3xl border border-white/20">
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+              CLASS ACTION FORMING
             </div>
-
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/90 p-10 backdrop-blur-sm">
-              <p className="text-xl leading-relaxed">
-                If one recovered job covers the entire month, the math is already
-                attractive.
-              </p>
-              <div className="mt-8 flex items-center gap-3 text-sm text-yellow-400">
-                <Clock className="h-5 w-5" /> One booked job can often justify the cost
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="how" className="px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold tracking-tight">
-              How ServiceLock Works
-            </h2>
-            <p className="text-xl text-zinc-400">
-              From missed call to warm handoff in seconds
+            
+            <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-none">
+              You were <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">screwed over</span>.<br />
+              Now we fight back.
+            </h1>
+            
+            <p className="text-xl text-zinc-400 max-w-lg">
+              Former and current employees of LexisNexis Risk Solutions: 
+              Join the growing class-action lawsuit against unfair practices, 
+              wrongful terminations, data misuse, and corporate exploitation.
             </p>
+
+            <div className="flex items-center gap-x-4">
+              <button
+                onClick={() => document.getElementById('file')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-10 py-6 bg-white text-black hover:scale-105 transition-all text-xl font-semibold rounded-3xl flex items-center gap-x-3 shadow-2xl shadow-red-500/30"
+              >
+                FILE YOUR GRIEVANCE
+                <ArrowRight className="w-6 h-6" />
+              </button>
+              
+              <div className="text-sm leading-tight">
+                <div className="flex -space-x-4">
+                  <div className="w-8 h-8 bg-zinc-700 border-2 border-black rounded-2xl flex items-center justify-center text-xs">👷</div>
+                  <div className="w-8 h-8 bg-zinc-700 border-2 border-black rounded-2xl flex items-center justify-center text-xs">📊</div>
+                  <div className="w-8 h-8 bg-zinc-700 border-2 border-black rounded-2xl flex items-center justify-center text-xs">💼</div>
+                </div>
+                <p className="text-zinc-400 mt-2">+1,847 employees<br />already joined</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-x-8 text-sm text-zinc-400">
+              <div className="flex items-center gap-x-2">
+                <Shield className="w-5 h-5 text-emerald-400" />
+                <span>100% Confidential</span>
+              </div>
+              <div className="flex items-center gap-x-2">
+                <Scale className="w-5 h-5 text-emerald-400" />
+                <span>No fees to join</span>
+              </div>
+              <div className="flex items-center gap-x-2">
+                <Users className="w-5 h-5 text-emerald-400" />
+                <span>Attorney-backed</span>
+              </div>
+            </div>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-4">
-            {[
-              {
-                num: "01",
-                title: "Missed call detected",
-                desc: "A customer calls while your team is on a job, after hours, or during dispatch.",
-              },
-              {
-                num: "02",
-                title: "Instant response goes out",
-                desc: "A fast, professional SMS is sent while the customer is still deciding who to hire.",
-              },
-              {
-                num: "03",
-                title: "Lead details get captured",
-                desc: "We collect name, job type, urgency, and callback preference.",
-              },
-              {
-                num: "04",
-                title: "Your team gets the handoff",
-                desc: "You receive a warm lead with full context, so your callback feels informed and fast.",
-              },
-            ].map((step, i) => (
-              <div
-                key={i}
-                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-8 transition-all hover:border-yellow-500/50"
-              >
-                <div className="mb-6 text-7xl font-bold text-yellow-500/20 transition group-hover:text-yellow-500/40">
-                  {step.num}
+          {/* Hero visual */}
+          <div className="relative hidden md:block">
+            <div className="absolute -inset-4 bg-red-500/10 blur-3xl rounded-[4rem] -rotate-6" />
+            <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 shadow-2xl relative">
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <div className="text-red-400 font-mono text-sm">LEXISNEXIS RISK SOLUTIONS</div>
+                  <div className="text-3xl font-semibold mt-1">Employee Impact Report</div>
                 </div>
-                <h3 className="mb-4 text-2xl font-semibold">{step.title}</h3>
-                <p className="text-zinc-400">{step.desc}</p>
+                <div className="px-4 py-1 bg-red-500/10 text-red-400 text-xs font-medium rounded-2xl">CONFIDENTIAL</div>
               </div>
-            ))}
+              
+              <div className="space-y-6">
+                <div className="h-2 bg-white/10 rounded-3xl w-3/4" />
+                <div className="h-2 bg-white/10 rounded-3xl w-5/6" />
+                <div className="h-2 bg-white/10 rounded-3xl w-1/2" />
+                
+                <div className="pt-8 border-t border-white/10 flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-x-2 text-emerald-400">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-medium">Class Action Filed</span>
+                  </div>
+                  <div className="text-zinc-400">Q2 2026</div>
+                </div>
+              </div>
+              
+              <div className="absolute -bottom-6 -right-6 bg-black border border-white/20 text-xs px-6 py-3 rounded-3xl flex items-center gap-x-2 shadow-xl">
+                <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
+                1,847 grievances received
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Industries & Use Cases */}
-      <section className="bg-zinc-900 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-16 text-center text-5xl font-bold tracking-tight">
-            Built for Mid-Tier Service Businesses
-          </h2>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {["HVAC", "Plumbing", "Electrical", "Roofing"].map((industry) => (
-              <div
-                key={industry}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8 transition hover:border-yellow-500/30"
-              >
-                <h3 className="mb-4 text-2xl font-semibold">{industry}</h3>
-                <p className="text-sm text-zinc-400">
-                  After-hours emergencies, dispatch spikes, paid ad traffic, weekend
-                  calls, ServiceLock keeps leads warm.
+      {/* PROBLEM SECTION */}
+      <section id="problem" className="py-20 bg-black/60">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-12 gap-16 items-center">
+            <div className="md:col-span-5">
+              <div className="sticky top-28">
+                <span className="text-red-500 font-medium tracking-widest text-sm">THE TRUTH</span>
+                <h2 className="text-5xl font-bold tracking-tighter mt-3 leading-none">
+                  LexisNexis Risk Solutions has been screwing over its people for years.
+                </h2>
+                <p className="text-zinc-400 mt-6 text-lg">
+                  Inaccurate background reports. Retaliatory firings. Misuse of employee data. 
+                  Broken promises and zero accountability.
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="bg-black px-6 py-24">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold tracking-tight">
-              Simple Pricing for Real Results
-            </h2>
-            <p className="text-xl text-zinc-400">
-              One flat monthly price. No contract. Cancel anytime.
-            </p>
-          </div>
-
-          <div className="mx-auto max-w-xl rounded-3xl border border-yellow-500 bg-zinc-900 p-10 shadow-2xl shadow-yellow-500/10">
-            <div className="mb-6 inline-flex rounded-full bg-yellow-500 px-4 py-1.5 text-xs font-bold tracking-wider text-zinc-950">
-              14-DAY FREE TRIAL • NO RISK
             </div>
-
-            <div className="mb-3">
-              <span className="text-6xl font-bold tracking-tighter">$447</span>
-              <span className="ml-2 text-zinc-400">/mo</span>
-            </div>
-
-            <p className="text-sm text-zinc-400">
-              Billed monthly • Cancel anytime • No overage fees
-            </p>
-
-            <p className="mt-6 text-lg font-medium text-white">
-              Close just 1 recovered job and it can pay for itself.
-            </p>
-
-            <ul className="mt-10 space-y-4">
-              {[
-                "Instant SMS response on every missed call (5–15 seconds)",
-                "Captures name, job type, and urgency",
-                "Warm handoff with job context, ready to close",
-                "Basic CRM / dispatch integrations",
-                "Works 24/7 with no extra charges",
-                "Replaces or beats most live answering services",
-              ].map((feature, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-yellow-400" />
-                  <span className="text-zinc-300">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href="#trial"
-              className="mt-10 block rounded-2xl bg-yellow-500 py-4 text-center text-lg font-semibold text-zinc-950 transition-all hover:bg-yellow-400"
-            >
-              Start 14-Day Free Trial
-            </a>
-
-            <p className="mt-6 text-center text-sm text-zinc-400">
-              If we don’t capture at least 3 real inbound leads, you don’t pay.
-            </p>
-
-            <p className="mt-3 text-center text-xs text-zinc-500">
-              If you're currently paying for an answering service, this usually costs
-              the same or less, but actually books more jobs.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Trial Form */}
-      <section
-        id="trial"
-        className="border-t border-zinc-800 bg-zinc-950 px-6 py-24"
-      >
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-5xl font-bold tracking-tight">
-              Start Your 14-Day Free Trial
-            </h2>
-            <p className="text-xl text-zinc-400">
-              Tell us a little about your business. We’ll review the fit and reach
-              out fast.
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6 rounded-3xl border border-zinc-800 bg-zinc-900 p-8 md:p-10"
-          >
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <label htmlFor="fullName" className="mb-2 block text-sm font-medium">
-                  Full Name
-                </label>
-                <input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  required
-                  value={formData.fullName}
-                  onChange={updateField}
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-                />
+            
+            <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="bg-zinc-900/70 border border-white/10 rounded-3xl p-8 hover:border-red-400/30 transition-all group">
+                <FileText className="w-8 h-8 text-red-400 mb-6 group-hover:scale-110 transition" />
+                <h4 className="font-semibold text-xl">Inaccurate Risk Reports</h4>
+                <p className="text-zinc-400 mt-3">Employees blacklisted by faulty data that ruined careers and future job prospects.</p>
               </div>
+              <div className="bg-zinc-900/70 border border-white/10 rounded-3xl p-8 hover:border-red-400/30 transition-all group">
+                <FileText className="w-8 h-8 text-red-400 mb-6 group-hover:scale-110 transition" />
+                <h4 className="font-semibold text-xl">Wrongful Terminations</h4>
+                <p className="text-zinc-400 mt-3">Sudden layoffs tied to internal “risk scoring” systems that were never transparent.</p>
+              </div>
+              <div className="bg-zinc-900/70 border border-white/10 rounded-3xl p-8 hover:border-red-400/30 transition-all group">
+                <FileText className="w-8 h-8 text-red-400 mb-6 group-hover:scale-110 transition" />
+                <h4 className="font-semibold text-xl">Data Privacy Violations</h4>
+                <p className="text-zinc-400 mt-3">Employee personal information sold and shared without consent or compensation.</p>
+              </div>
+              <div className="bg-zinc-900/70 border border-white/10 rounded-3xl p-8 hover:border-red-400/30 transition-all group">
+                <FileText className="w-8 h-8 text-red-400 mb-6 group-hover:scale-110 transition" />
+                <h4 className="font-semibold text-xl">Broken Retaliation Promises</h4>
+                <p className="text-zinc-400 mt-3">Whistleblowers silenced. HR complaints ignored. Careers destroyed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div>
-                <label
-                  htmlFor="companyName"
-                  className="mb-2 block text-sm font-medium"
+      {/* WHY CLASS ACTION */}
+      <section id="why" className="py-20 bg-gradient-to-b from-black/60 to-zinc-950">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-5xl font-bold tracking-tighter">One voice is easy to ignore.<br />Thousands cannot be silenced.</h2>
+          <div className="max-w-2xl mx-auto mt-8 text-zinc-400 text-xl">
+            Together we are stronger. A class-action lawsuit forces LexisNexis Risk Solutions to answer in court and pay what they owe.
+          </div>
+
+          <div className="mt-16 grid md:grid-cols-3 gap-8">
+            <div className="bg-white/5 rounded-3xl p-8 text-left">
+              <div className="text-emerald-400 text-6xl font-bold">01</div>
+              <h3 className="text-2xl font-semibold mt-6">Collective Power</h3>
+              <p className="text-zinc-400 mt-4">Your story adds weight. More grievances = higher chance of success and bigger settlement.</p>
+            </div>
+            <div className="bg-white/5 rounded-3xl p-8 text-left">
+              <div className="text-emerald-400 text-6xl font-bold">02</div>
+              <h3 className="text-2xl font-semibold mt-6">No Cost to You</h3>
+              <p className="text-zinc-400 mt-4">Contingency attorneys. You pay nothing unless we win. We fight for you.</p>
+            </div>
+            <div className="bg-white/5 rounded-3xl p-8 text-left">
+              <div className="text-emerald-400 text-6xl font-bold">03</div>
+              <h3 className="text-2xl font-semibold mt-6">Real Accountability</h3>
+              <p className="text-zinc-400 mt-4">Force LexisNexis to reform its practices and compensate every affected employee.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section id="stories" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-center text-4xl font-bold mb-12">Real employees. Real pain.</h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <div className="bg-zinc-900/60 border border-white/10 rounded-3xl p-8">
+              <p className="italic text-zinc-300">
+                “My background report flagged me as high-risk because of an error in their database. I lost three job offers in a row. HR wouldn’t even talk to me.”
+              </p>
+              <div className="mt-8 flex items-center gap-x-3">
+                <div className="w-10 h-10 bg-amber-300 rounded-2xl flex items-center justify-center text-xl">🧔</div>
+                <div>
+                  <div className="font-medium">Marcus Rivera</div>
+                  <div className="text-xs text-zinc-400">Senior Data Analyst • Terminated 2024</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="bg-zinc-900/60 border border-white/10 rounded-3xl p-8">
+              <p className="italic text-zinc-300">
+                “They used my personal data in their ‘risk scoring’ without consent. When I complained, I was let go within two weeks. This company destroys lives.”
+              </p>
+              <div className="mt-8 flex items-center gap-x-3">
+                <div className="w-10 h-10 bg-purple-300 rounded-2xl flex items-center justify-center text-xl">👩🏻‍💼</div>
+                <div>
+                  <div className="font-medium">Sarah Patel</div>
+                  <div className="text-xs text-zinc-400">Compliance Officer • 2023-2025</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="bg-zinc-900/60 border border-white/10 rounded-3xl p-8">
+              <p className="italic text-zinc-300">
+                “Former employee here — watched them bury legitimate whistleblower complaints. Their internal ‘risk solutions’ are just cover for union-busting.”
+              </p>
+              <div className="mt-8 flex items-center gap-x-3">
+                <div className="w-10 h-10 bg-cyan-300 rounded-2xl flex items-center justify-center text-xl">👨🏽‍💻</div>
+                <div>
+                  <div className="font-medium">Jamal Thompson</div>
+                  <div className="text-xs text-zinc-400">Software Engineer • Atlanta, GA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT FORM / FILE GRIEVANCE */}
+      <section id="file" className="py-24 bg-gradient-to-br from-red-950/30 to-black">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold tracking-tighter">File Your Grievance</h2>
+            <p className="text-xl text-zinc-400 mt-4">
+              Takes 90 seconds. Your information is protected under attorney-client privilege.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-3xl p-10 shadow-2xl border border-white/10">
+            {submitted ? (
+              <div className="text-center py-12">
+                <div className="mx-auto w-16 h-16 bg-emerald-400 text-black rounded-2xl flex items-center justify-center text-4xl mb-6">✅</div>
+                <h3 className="text-3xl font-semibold">Grievance Received</h3>
+                <p className="text-zinc-400 mt-4">
+                  Thank you. A member of our legal team will contact you within 48 hours.<br />
+                  You are now part of the class action.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {/* Personal Info */}
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">FULL NAME</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                      placeholder="Jane Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">EMAIL ADDRESS</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                      placeholder="you@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">PHONE</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                      placeholder="(555) 555-5555"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">EMPLOYMENT STATUS</label>
+                    <select
+                      name="employmentStatus"
+                      value={formData.employmentStatus}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                    >
+                      <option value="former">Former Employee</option>
+                      <option value="current">Current Employee</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">START DATE</label>
+                    <input
+                      type="month"
+                      name="employmentStart"
+                      value={formData.employmentStart}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2 font-medium">END DATE (if former)</label>
+                    <input
+                      type="month"
+                      name="employmentEnd"
+                      value={formData.employmentEnd}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-zinc-400 mb-2 font-medium">YOUR POSITION / DEPARTMENT</label>
+                  <input
+                    type="text"
+                    name="position"
+                    value={formData.position}
+                    onChange={handleChange}
+                    className="w-full bg-black border border-white/20 focus:border-red-400 rounded-2xl px-5 py-5 outline-none transition"
+                    placeholder="Senior Risk Analyst, Atlanta HQ"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm text-zinc-400 mb-2 font-medium">TELL US WHAT HAPPENED</label>
+                  <textarea
+                    name="grievance"
+                    value={formData.grievance}
+                    onChange={handleChange}
+                    required
+                    rows={5}
+                    className="w-full bg-black border border-white/20 focus:border-red-400 rounded-3xl px-5 py-5 outline-none resize-none transition"
+                    placeholder="Be as detailed as you like. Dates, names, specific incidents, how it affected you..."
+                  />
+                </div>
+
+                <div className="flex items-start gap-x-3">
+                  <input
+                    type="checkbox"
+                    id="agree"
+                    name="agree"
+                    checked={formData.agree}
+                    onChange={handleChange}
+                    className="mt-1 w-5 h-5 accent-red-600"
+                  />
+                  <label htmlFor="agree" className="text-sm text-zinc-400 leading-tight cursor-pointer">
+                    I confirm this information is truthful and I wish to join the class-action lawsuit against LexisNexis Risk Solutions. 
+                    I understand my story may be used (anonymously if requested) by the legal team.
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-7 bg-red-600 hover:bg-red-500 disabled:bg-zinc-700 transition-all text-xl font-semibold rounded-3xl flex items-center justify-center gap-x-3 uppercase tracking-widest shadow-xl shadow-red-600/40"
                 >
-                  Company Name
-                </label>
-                <input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  required
-                  value={formData.companyName}
-                  onChange={updateField}
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <label htmlFor="phone" className="mb-2 block text-sm font-medium">
-                  Phone
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={updateField}
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="mb-2 block text-sm font-medium">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={updateField}
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="industry" className="mb-2 block text-sm font-medium">
-                Industry
-              </label>
-              <select
-                id="industry"
-                name="industry"
-                required
-                value={formData.industry}
-                onChange={updateField}
-                className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-              >
-                <option value="">Select one</option>
-                <option value="HVAC">HVAC</option>
-                <option value="Plumbing">Plumbing</option>
-                <option value="Electrical">Electrical</option>
-                <option value="Roofing">Roofing</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="missedCallProblem"
-                className="mb-2 block text-sm font-medium"
-              >
-                What happens today when you miss a call?
-              </label>
-              <textarea
-                id="missedCallProblem"
-                name="missedCallProblem"
-                required
-                rows={5}
-                value={formData.missedCallProblem}
-                onChange={updateField}
-                className="w-full resize-none rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-400"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-2xl bg-yellow-500 px-8 py-4 text-lg font-semibold text-zinc-950 transition-all hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSubmitting ? "Submitting..." : "Start 14-Day Free Trial"}
-            </button>
-
-            {submitSuccess && (
-              <div className="rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-green-300">
-                Thanks, your trial request is in. Check your email and we’ll follow
-                up fast.
-              </div>
-            )}
-
-            {submitError && (
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">
-                {submitError}
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                      SUBMITTING TO LEGAL TEAM...
+                    </>
+                  ) : (
+                    <>
+                      SUBMIT GRIEVANCE &amp; JOIN THE FIGHT
+                      <ArrowRight className="w-6 h-6" />
+                    </>
+                  )}
+                </button>
               </div>
             )}
           </form>
-        </div>
-      </section>
 
-      {/* FAQ */}
-      <section id="faq" className="bg-zinc-900 px-6 py-24">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-16 text-center text-5xl font-bold tracking-tight">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-10 text-lg">
-            {[
-              [
-                "Does ServiceLock replace my receptionist or CSR?",
-                "No. It only activates on missed calls to speed up follow-up. Your team still handles live calls.",
-              ],
-              [
-                "Can I keep my current business number?",
-                "Yes. It works with your existing phone number.",
-              ],
-              [
-                "How fast does the customer get a response?",
-                "Usually within 5–15 seconds of the missed call.",
-              ],
-              [
-                "What information gets captured?",
-                "Name, job type, urgency, callback preference, and any details the customer shares.",
-              ],
-              [
-                "Who is this best for?",
-                "Mid-tier HVAC, plumbing, electrical, and roofing businesses where missed calls equal real lost revenue.",
-              ],
-              ["Is there a contract?", "No contract. Cancel anytime."],
-            ].map(([q, a], i) => (
-              <div key={i} className="border-b border-zinc-800 pb-8 last:border-0">
-                <h3 className="mb-3 font-semibold">{q}</h3>
-                <p className="text-zinc-400">{a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="border-t border-zinc-800 bg-black px-6 py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-6 text-5xl font-bold tracking-tight">
-            Stop letting good calls disappear
-          </h2>
-          <p className="mb-10 text-2xl text-zinc-400">
-            You already earned the lead. Protect it with faster, smarter follow-up.
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#trial"
-              className="inline-block rounded-2xl bg-yellow-500 px-12 py-5 text-xl font-semibold text-zinc-950 transition-all hover:bg-yellow-400"
-            >
-              Start Your 14-Day Free Trial
-            </a>
-
-            <a
-              href={`tel:${DEMO_NUMBER}`}
-              className="inline-flex items-center gap-2 rounded-2xl border border-zinc-700 px-10 py-5 text-xl font-semibold transition-all hover:border-zinc-500"
-              aria-label={`Call demo at ${DISPLAY_NUMBER}`}
-            >
-              <Phone className="h-5 w-5" />
-              Call Demo Now
-            </a>
-          </div>
-
-          <p className="mt-8 text-sm text-zinc-500">
-            No setup fee • No contract • Cancel anytime
+          <p className="text-center text-xs text-zinc-500 mt-8">
+            All submissions are reviewed by licensed attorneys. Your data is encrypted and never shared with LexisNexis.
           </p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-900 bg-zinc-950 px-6 py-12">
-        <div className="mx-auto max-w-6xl text-center text-sm text-zinc-500">
-          © {new Date().getFullYear()} ServiceLock. All rights reserved.
-          <br />
-          Built for service businesses that refuse to lose revenue to missed calls.
-          <br />
-          <a
-            href={`tel:${DEMO_NUMBER}`}
-            className="transition-colors hover:text-yellow-400"
-          >
-            {DISPLAY_NUMBER}
-          </a>
-
-          <div className="mt-6 flex justify-center gap-6 text-sm text-zinc-400">
-            <a href="/terms" className="transition hover:text-white">
-              Terms
-            </a>
-            <a href="/privacy" className="transition hover:text-white">
-              Privacy
-            </a>
+      {/* FOOTER */}
+      <footer className="bg-black py-12 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 text-center text-xs text-zinc-500 flex flex-col md:flex-row justify-between items-center gap-y-4">
+          <div>© 2026 LexisNexis Justice Initiative • Not affiliated with LexisNexis Risk Solutions</div>
+          <div className="flex gap-x-6">
+            <a href="#" className="hover:text-white">Privacy Policy</a>
+            <a href="#" className="hover:text-white">Attorney Disclaimer</a>
+            <a href="#" className="hover:text-white">Contact Legal Team</a>
           </div>
+          <div>Made with 🔥 for every employee who deserves better</div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
