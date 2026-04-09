@@ -1,6 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import { Check, ArrowRight, Phone, Zap, Clock } from "lucide-react";
 
 const DEMO_NUMBER = "+18665150533";
@@ -24,11 +30,52 @@ const initialFormState: FormState = {
   missedCallProblem: "",
 };
 
+function ParallaxWord({
+  text,
+  y,
+  opacity,
+  className = "",
+}: {
+  text: string;
+  y: MotionValue<string | number>;
+  opacity: MotionValue<number>;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      style={{ y, opacity }}
+      className={`pointer-events-none absolute inset-x-0 text-center font-black uppercase tracking-[0.35em] ${className}`}
+      aria-hidden="true"
+    >
+      {text}
+    </motion.div>
+  );
+}
+
 export default function ServiceLock() {
   const [formData, setFormData] = useState<FormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const heroRef = useRef<HTMLElement | null>(null);
+  const roiRef = useRef<HTMLElement | null>(null);
+
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const { scrollYProgress: roiProgress } = useScroll({
+    target: roiRef,
+    offset: ["start end", "end start"],
+  });
+
+  const heroWordY = useTransform(heroProgress, [0, 1], ["0%", "30%"]);
+  const heroWordOpacity = useTransform(heroProgress, [0, 0.45, 1], [0.18, 0.09, 0]);
+
+  const roiWordY = useTransform(roiProgress, [0, 1], ["10%", "-15%"]);
+  const roiWordOpacity = useTransform(roiProgress, [0, 0.5, 1], [0, 0.08, 0]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -106,28 +153,70 @@ export default function ServiceLock() {
       </nav>
 
       {/* Hero */}
-      <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 px-6 pb-24 pt-32">
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-5 py-2">
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 px-6 pb-24 pt-32"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(234,179,8,0.14),transparent_38%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent" />
+
+        <ParallaxWord
+          text="Recovered Revenue"
+          y={heroWordY}
+          opacity={heroWordOpacity}
+          className="top-24 text-[12vw] text-white/[0.05]"
+        />
+
+        <div className="relative mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/80 px-5 py-2 backdrop-blur-sm"
+          >
             <span className="text-yellow-400">⚡</span>
             <span className="text-sm font-medium">Missed calls = lost revenue</span>
-          </div>
+          </motion.div>
 
-          <h1 className="mb-6 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
-            
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08, duration: 0.6 }}
+            className="mb-6 text-6xl font-bold leading-[0.95] tracking-tighter md:text-7xl"
+          >
+            ServiceLock
             <br />
             Stop Losing Jobs
             <br />
             From <span className="text-yellow-400">Missed Calls</span>
-          </h1>
+          </motion.h1>
 
-          <p className="mx-auto mb-10 max-w-2xl text-2xl text-zinc-400">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.16, duration: 0.6 }}
+            className="mx-auto mb-6 max-w-2xl text-2xl text-zinc-400"
+          >
             Built for service businesses where missed calls mean lost revenue.
             <br />
             Instant SMS follow-up → smart qualification → warm lead handoff.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.22, duration: 0.6 }}
+            className="mx-auto mb-10 max-w-xl text-base text-zinc-500"
+          >
+            Close just one recovered job and it can pay for itself.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.28, duration: 0.6 }}
+            className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
             <a
               href="#trial"
               className="flex items-center justify-center gap-3 rounded-2xl bg-yellow-500 px-10 py-4 text-lg font-semibold text-zinc-950 transition-all hover:bg-yellow-400"
@@ -143,12 +232,23 @@ export default function ServiceLock() {
             >
               <Phone className="h-5 w-5" /> Call Demo
             </a>
-          </div>
+          </motion.div>
 
-          <p className="mt-8 text-sm text-zinc-500">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.34, duration: 0.6 }}
+            className="mt-8 text-sm text-zinc-500"
+          >
             No credit card required • No setup fee • Cancel anytime
-          </p>
-          <p className="mt-3 text-sm text-zinc-400">
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.38, duration: 0.6 }}
+            className="mt-3 text-sm text-zinc-400"
+          >
             Demo line:{" "}
             <a
               href={`tel:${DEMO_NUMBER}`}
@@ -156,7 +256,7 @@ export default function ServiceLock() {
             >
               {DISPLAY_NUMBER}
             </a>
-          </p>
+          </motion.p>
         </div>
       </section>
 
@@ -171,6 +271,59 @@ export default function ServiceLock() {
             responds faster, captures key details, and delivers warm leads so your
             team calls back with context, not cold.
           </p>
+        </div>
+      </section>
+
+      {/* Why It Matters + ROI */}
+      <section
+        ref={roiRef}
+        className="relative overflow-hidden bg-zinc-950 px-6 py-24"
+      >
+        <ParallaxWord
+          text="Lost Revenue"
+          y={roiWordY}
+          opacity={roiWordOpacity}
+          className="top-10 text-[10vw] text-yellow-400/[0.08]"
+        />
+
+        <div className="relative mx-auto max-w-5xl">
+          <div className="grid items-center gap-16 md:grid-cols-2">
+            <div>
+              <h2 className="mb-8 text-5xl font-bold tracking-tight">
+                You’re Losing Real Money Every Time You Miss a Call
+              </h2>
+
+              <div className="space-y-8 text-lg">
+                <div className="flex gap-4">
+                  <div className="font-mono text-2xl text-yellow-400">$500</div>
+                  <div>Small repair or service call</div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="font-mono text-2xl text-yellow-400">$1,500</div>
+                  <div>Mid-sized job or urgent issue</div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="font-mono text-2xl text-yellow-400">$5,000+</div>
+                  <div>High-value project or replacement</div>
+                </div>
+              </div>
+
+              <p className="mt-10 text-zinc-400">
+                You already paid for that call through ads, SEO, referrals, or
+                reputation. ServiceLock helps you protect it.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/90 p-10 backdrop-blur-sm">
+              <p className="text-xl leading-relaxed">
+                If one recovered job covers the entire month, the math is already
+                attractive.
+              </p>
+              <div className="mt-8 flex items-center gap-3 text-sm text-yellow-400">
+                <Clock className="h-5 w-5" /> One booked job can often justify the cost
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -220,47 +373,6 @@ export default function ServiceLock() {
                 <p className="text-zinc-400">{step.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why It Matters + ROI */}
-      <section className="bg-zinc-950 px-6 py-24">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid items-center gap-16 md:grid-cols-2">
-            <div>
-              <h2 className="mb-8 text-5xl font-bold tracking-tight">
-                You’re Losing Real Money Every Time You Miss a Call
-              </h2>
-              <div className="space-y-8 text-lg">
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$500</div>
-                  <div>Small repair or service call</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$1,500</div>
-                  <div>Mid-sized job or urgent issue</div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="font-mono text-2xl text-yellow-400">$5,000+</div>
-                  <div>High-value project or replacement</div>
-                </div>
-              </div>
-              <p className="mt-10 text-zinc-400">
-                You already paid for that call through ads, SEO, referrals, or
-                reputation. ServiceLock helps you protect it.
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-10">
-              <p className="text-xl leading-relaxed">
-                If one recovered job covers the entire month, the math is already
-                attractive.
-              </p>
-              <div className="mt-8 flex items-center gap-3 text-sm text-yellow-400">
-                <Clock className="h-5 w-5" /> One booked job can often justify the cost
-              </div>
-            </div>
           </div>
         </div>
       </section>
